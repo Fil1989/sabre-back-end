@@ -1,7 +1,4 @@
 const jwt = require('jsonwebtoken')
-// const sgMail = require('@sendgrid/mail')
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY)SENDGRID_API_KEY=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
-
 const { NotAuthorizedError } = require('../errorHelpers/errors')
 
 const authMiddleware = async (req, res, next) => {

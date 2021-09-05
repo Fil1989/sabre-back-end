@@ -17,8 +17,6 @@ const loginController = async (req, res) => {
   const user = await login(email, password)
   if (!user) {
     res.status(404).json({ message: 'user login error' })
-  } else if (!user.verify) {
-    res.status(400).json({ message: 'Please, verify user by email' })
   } else if (user.token) {
     res.status(200).json({ message: 'user login success', token: user.token })
   }

@@ -41,22 +41,9 @@ const validateUser = async (req, res, next) => {
   }
   next()
 }
-const validateVerification = async (req, res, next) => {
-  const schema = Joi.object({
-    email: Joi.string().email().required().max(50),
-  })
-
-  const validationResult = schema.validate(req.body)
-  if (validationResult.error) {
-    await res.status(400).json({ message: 'missing required field email' })
-    return
-  }
-  next()
-}
 
 module.exports = {
   validationMiddleware,
   validateFavoriteStatus,
   validateUser,
-  validateVerification,
 }
