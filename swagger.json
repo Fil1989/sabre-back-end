@@ -1,0 +1,881 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.2",
+    "title": "Connnections API",
+    "description": "API documentation for Connnections project",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "servers": [
+    {
+      "url": "https://connnections.herokuapp.com/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "User",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Contacts",
+      "description": "Contacts endpoints"
+    }
+  ],
+  "paths": {
+    "/api/users/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create new user",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "user added. Please verify by email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Login user",
+        "parameters": [],
+        "requestBody": {
+          "description": "Login object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/logout": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Logout user",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Not Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/verify/{verificationtoken}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Verification of the user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "verificationtoken",
+            "type": "string",
+            "description": "Enter verification token",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserVerification"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/verify": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Checking verification of user",
+        "requestBody": {
+          "description": "Request object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationCheckRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReverificationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/avatars": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Uploading profile photo",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Chose the avatar picture",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AvatarRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvatarResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/contacts/": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Getting all contacts by authorization of user",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Add a contact",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Contact's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddContactRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddGetContactResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/contacts/{contactId}": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Get contact by id",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contactId",
+            "type": "string",
+            "description": "Contact's id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Found contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddGetContactResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Change contact info",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contactId",
+            "type": "string",
+            "description": "Contact's id",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Contact's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddContactRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Found contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddGetContactResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Remove a contact",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contactId",
+            "type": "string",
+            "description": "Contact's id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/contacts/{contactId}/favorite": {
+      "patch": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Change favorite status",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contactId",
+            "type": "string",
+            "description": "Id of the contact",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Favorite property",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FavoriteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddGetContactResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password"
+          }
+        },
+        "example": {
+          "email": "guest@example.com",
+          "password": "qwerty123"
+        }
+      },
+      "ReverificationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Resending of verification email"
+          }
+        },
+        "example": {
+          "message": "Verification email has been sent again"
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "user added. Please verify by email"
+          }
+        },
+        "example": {
+          "message": "user added. Please verify by email"
+        }
+      },
+      "AvatarRequest": {
+        "type": "object",
+        "properties": {
+          "avatar": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "AvatarResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "user's email"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "link to avatar picture"
+          }
+        },
+        "example": {
+          "email": "example@gmail.com",
+          "avatarURL": "avatars/a5f5e0b7-d194-4523-8cb0-8bb3b20bd848.jpg"
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password"
+          }
+        },
+        "example": {
+          "email": "guest@example.com",
+          "password": "qwerty123"
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "User's token"
+          },
+          "message": {
+            "type": "string",
+            "description": "Success message"
+          }
+        },
+        "example": {
+          "token": "JWT",
+          "message": "user login success"
+        }
+      },
+      "VerificationCheckRequest": {
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email"
+          }
+        },
+        "example": {
+          "email": "example.email@gmail.com"
+        }
+      },
+      "UserVerification": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Successful verification message"
+          }
+        },
+        "example": {
+          "message": "Verification successful"
+        }
+      },
+      "ContactsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Contact's name"
+            },
+            "email": {
+              "type": "string",
+              "description": "Contact's email"
+            },
+            "phone": {
+              "type": "string",
+              "description": "Contact's phone"
+            },
+            "_id": {
+              "type": "string",
+              "description": "Contact's id"
+            },
+            "userId": {
+              "type": "string",
+              "description": "Id of contact's owner"
+            },
+            "favorite": {
+              "type": "boolean",
+              "description": "Is the contact in favorites"
+            }
+          }
+        },
+        "example": [
+          {
+            "favorite": false,
+            "_id": "610b04490e114838f4cc121c",
+            "name": "contact_test",
+            "email": "contact_test@gmail.com",
+            "phone": "1234567890",
+            "userId": "6109a955feac38001c822871"
+          }
+        ]
+      },
+      "AddContactRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "phone"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Contact's name"
+          },
+          "email": {
+            "type": "string",
+            "description": "Contact's email",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Contact's name"
+          },
+          "favorite": {
+            "type": "boolean",
+            "description": "Is contact in favorits"
+          }
+        },
+        "example": {
+          "name": "Peter",
+          "email": "petet_pen@gmail.com",
+          "phone": "+1234567890"
+        }
+      },
+      "AddGetContactResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Contact's name"
+          },
+          "_id": {
+            "type": "string",
+            "description": "Contact's id"
+          },
+          "email": {
+            "type": "string",
+            "description": "Contact's email"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Contact's phone number"
+          },
+          "favorite": {
+            "type": "boolean",
+            "description": "Is contact in favorites"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Contact's owner id"
+          }
+        },
+        "example": {
+          "favorite": false,
+          "_id": "610bcbf082cd4533ac4a8dfe",
+          "name": "Peter",
+          "email": "peter_pen@gmail.com",
+          "phone": "+1234567890",
+          "userId": "610bab616d448d001c8f53dd",
+          "__v": 0
+        }
+      },
+      "DateResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email"
+          },
+          "date": {
+            "type": "string",
+            "description": "Day's date"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kcal": {
+                  "type": "number",
+                  "description": "Product's kcal"
+                },
+                "weight": {
+                  "type": "number",
+                  "description": "Product's weight"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Product's title"
+                }
+              }
+            }
+          },
+          "dayNorm": {
+            "type": "string",
+            "description": "Calories per day"
+          },
+          "totalKcalPerDay": {
+            "type": "number",
+            "description": "Calories consumed per day"
+          },
+          "KcalRemain": {
+            "type": "number",
+            "description": "Calories left for the day"
+          },
+          "percentage": {
+            "type": "string",
+            "description": "Percentage of the daily norm"
+          }
+        },
+        "example": {
+          "email": "guest@example.com",
+          "date": "2021-07-27",
+          "products": [
+            {
+              "kcal": 50,
+              "weight": 250,
+              "title": "Томат (помидор)"
+            },
+            {
+              "kcal": 108,
+              "weight": 400,
+              "title": "Квас хлебный"
+            }
+          ],
+          "dayNorm": 1570,
+          "totalKcalPerDay": 158,
+          "kcalRemain": 1412,
+          "percentage": 10
+        }
+      },
+      "FavoriteRequest": {
+        "type": "object",
+        "properties": {
+          "favorite": {
+            "type": "boolean",
+            "description": "Is contact in favorites"
+          }
+        },
+        "example": {
+          "favorite": true
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
