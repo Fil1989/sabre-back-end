@@ -5,21 +5,17 @@ const contactsSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Set name for contact'],
   },
-  email: {
+  surname: {
     type: String,
+    required: [true, 'Set name for contact'],
   },
   phone: {
     type: String,
   },
-  favorite: {
-    type: Boolean,
-    default: false,
-  },
-  userId: {
+  address: {
     type: String,
-    required: [true, 'Set id of user'],
   },
 })
-const Contact = mongoose.model('Contact', contactsSchema)
+const Contact = mongoose.model('Connection', contactsSchema)
 
 module.exports = { Contact }
